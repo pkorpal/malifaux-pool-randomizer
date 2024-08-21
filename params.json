@@ -1,0 +1,8 @@
+{
+    "rounds": 3,
+    "gg": 4,
+    "can_duplicate": false,
+    "max_duplicate": 2,
+    "max_crew_size": 50,
+    "app_ver": "1.7.24"
+}

@@ -1,0 +1,9 @@
+{
+    "deployments": ["Standard", "Wedge", "Corner", "Flank"],
+    "strategies": ["Raid the Vaults", "Cloak and Dagger", "Stuff the Ballots", "Plant Explosives"],
+    "schemes": [
+        "Let Them Bleed", "Death Beds", "Power Ritual", "In Your Face", "Deliver A Message",
+        "Outflank", "Hold Up Their Forces", "Espionage", "Sweating Bullets",
+        "Information Overload", "Take Prisoner", "Protected Territory", "Ensnare"
+    ]
+}
