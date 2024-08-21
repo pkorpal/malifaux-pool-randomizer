@@ -43,7 +43,7 @@ def generate_qr(round, app_ver, max_crew_size, index):
         "created":"2024-08-21T21:37:00.000",
         "schemePool":round["Schemes"]
     }
-    img0 = Image.new('RGB', (795, 1460), color='white')
+    img0 = Image.new('RGB', (795, 1520), color='white')
     img_name = "img" + str(1+index) + ".png"
     img = qrcode.make(json.dumps(dataInput))
     img.save(img_name)
