@@ -29,37 +29,36 @@ def randomize_round(gg, round_num):
     return pool
 
 def generate_qr(round, app_ver, max_crew_size, index):
-    font_path = "/System/Library/Fonts/Helvetica.ttc"
-    font = ImageFont.truetype(font_path, 40)
+    font = ImageFont.truetype("/System/Library/Fonts/Helvetica.ttc", 40)
 
-    dataInput = {
-        "specialRules":{"Singles":{"name":"Singles","value":None}},
-        "name":round["Name"],
-        "ruleset":"GG Season 4",
-        "strat":round["Strategy"],
-        "deployment":round["Deployment"],
-        "maxCrewSize":max_crew_size,
-        "createdIn":app_ver,
-        "created":"2024-08-21T21:37:00.000",
-        "schemePool":round["Schemes"]
+    data_input = {
+        "specialRules": {"Singles": {"name": "Singles", "value": None}},
+        "name": round["Name"],
+        "ruleset": "GG Season 4",
+        "strat": round["Strategy"],
+        "deployment": round["Deployment"],
+        "maxCrewSize": max_crew_size,
+        "createdIn": app_ver,
+        "created": "2024-08-21T21:37:00.000",
+        "schemePool": round["Schemes"]
     }
-    img0 = Image.new('RGB', (795, 1520), color='white')
-    img_name = "img" + str(1+index) + ".png"
-    img = qrcode.make(json.dumps(dataInput))
-    img.save(img_name)
-    img = Image.open(img_name)
-    img0.paste(img,(0,730))
-    img0.save(img_name)
-    img = Image.open(img_name)
-    draw = ImageDraw.Draw(img)
-    draw.text((40, 40), round["Name"], fill='black', font=font)
-    draw.text((50,120), round["Strategy"], fill='black', font=font)
-    draw.text((50,180), round["Deployment"], fill='black', font=font)
-    for i in range(5):
-        y = 300 + i * 60
-        draw.text((50,y), round["Schemes"][i], fill='black', font=font)
-    img.save(img_name)
+    qr_img = qrcode.make(json.dumps(data_input))
 
+    img0 = Image.new('RGB', (795, 1520), color='white')
+    
+    img0.paste(qr_img, (0, 730))
+
+    draw = ImageDraw.Draw(img0)
+    draw.text((40, 40), round["Name"], fill='black', font=font)
+    draw.text((50, 120), round["Strategy"], fill='black', font=font)
+    draw.text((50, 180), round["Deployment"], fill='black', font=font)
+
+    for i, scheme in enumerate(round["Schemes"]):
+        y = 300 + i * 60
+        draw.text((50, y), scheme, fill='black', font=font)
+
+    img_name = f"img{1 + index}.png"
+    img0.save(img_name)
 
 def main():
     params = read_params()
