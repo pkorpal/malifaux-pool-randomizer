@@ -2,7 +2,8 @@
     "rounds": 3,
     "gg": 4,
     "can_duplicate": false,
-    "max_duplicate": 2,
+    "max_duplicate": 1,
     "max_crew_size": 50,
-    "app_ver": "1.7.24"
+    "app_ver": "1.7.24",
+    "event_name": "Nie zabijaj Sp. z o. o."
 }

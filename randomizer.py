@@ -12,9 +12,16 @@ def read_gg(gg_num):
     with open(f'gg{gg_num}.json', 'r') as file:
         return json.load(file)
 
-def randomize_round(gg, round_num):
+def randomize_round_no_duplicates(gg, round_num, previous_deployments):
     selected_strategy = random.choice(gg['strategies'])
-    selected_deployment = random.choice(gg['deployments'])
+    
+    # Ensure no duplicate deployments if rounds are fewer than 4
+    if round_num < 3:
+        available_deployments = [dep for dep in gg['deployments'] if dep not in previous_deployments]
+    else:
+        available_deployments = gg['deployments']
+    
+    selected_deployment = random.choice(available_deployments)
     selected_schemes = random.sample(gg['schemes'], 5)
 
     return {
@@ -22,13 +29,13 @@ def randomize_round(gg, round_num):
         "Strategy": selected_strategy,
         "Deployment": selected_deployment,
         "Schemes": selected_schemes
-    }
+    }, selected_deployment
 
-def generate_qr(round, app_ver, max_crew_size, index, font):
+def generate_qr(round, app_ver, max_crew_size, index, font, event_name):
     data_input = {
         "specialRules": {"Singles": {"name": "Singles", "value": None}},
         "name": round["Name"],
-        "ruleset": "GG Season 4",
+        "ruleset": f"{event_name} #{index+1}",
         "strat": round["Strategy"],
         "deployment": round["Deployment"],
         "maxCrewSize": max_crew_size,
@@ -42,7 +49,7 @@ def generate_qr(round, app_ver, max_crew_size, index, font):
     img0.paste(qr_img, (0, 730))
 
     draw = ImageDraw.Draw(img0)
-    draw.text((40, 40), round["Name"], fill='black', font=font)
+    draw.text((40, 40), f"{event_name} #{index+1}", fill='black', font=font)
     draw.text((50, 120), round["Strategy"], fill='black', font=font)
     draw.text((50, 180), round["Deployment"], fill='black', font=font)
 
@@ -60,9 +67,16 @@ def main():
     # Pre-load the font once
     font = ImageFont.truetype("/System/Library/Fonts/Helvetica.ttc", 40)
     
-    rounds = [randomize_round(gg, n) for n in range(params['rounds'])]
-    for index, round in enumerate(rounds):
-        generate_qr(round, params['app_ver'], params['max_crew_size'], index, font)
+    previous_deployments = []
+    rounds = []
+    
+    for n in range(params['rounds']):
+        round_data, selected_deployment = randomize_round_no_duplicates(gg, n, previous_deployments)
+        previous_deployments.append(selected_deployment)  # Track used deployments to avoid duplicates
+        rounds.append(round_data)
+        
+        # Generate QR and image for each round
+        generate_qr(round_data, params['app_ver'], params['max_crew_size'], n, font, params['event_name'])
 
 if __name__ == '__main__':
     main()
