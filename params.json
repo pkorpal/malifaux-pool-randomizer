@@ -4,6 +4,7 @@
     "can_duplicate": false,
     "max_duplicate": 1,
     "max_crew_size": 50,
-    "app_ver": "1.7.24",
-    "event_name": "Nie zabijaj Sp. z o. o."
+    "app_ver": "1.7.18",
+    "event_name": "Nie zabijaj Sp. z o. o.",
+    "ruleset" : "GG Season 4"
 }
